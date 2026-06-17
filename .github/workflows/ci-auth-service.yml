@@ -7,12 +7,12 @@ on:
   push:
     branches: [ "main" ]
     paths:
-      - 'services/auth-service/**'
+      - '../../services/auth-service'
       - '.github/workflows/ci-auth-service.yml'
   pull_request:
     branches: [ "main" ]
     paths:
-      - 'services/auth-service/**'
+      - '../../services/auth-service'
       - '.github/workflows/ci-auth-service.yml'
 
 jobs:
