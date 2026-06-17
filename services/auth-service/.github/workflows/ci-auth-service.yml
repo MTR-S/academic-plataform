@@ -2,14 +2,18 @@ name: CI/CD - Auth Service
 
 
 on:
+  workflow_dispatch:
+
   push:
     branches: [ "main" ]
     paths:
       - 'services/auth-service/**'
+      - '.github/workflows/ci-auth-service.yml'
   pull_request:
     branches: [ "main" ]
     paths:
       - 'services/auth-service/**'
+      - '.github/workflows/ci-auth-service.yml'
 
 jobs:
   build-and-test:
