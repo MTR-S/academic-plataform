@@ -44,7 +44,7 @@ public class TarefaService {
                 .toList();
     }
 
-    public void deletar(String id) {
+    public void deletar(Long id) {
         if (!tarefaRepository.existsById(id)) {
             throw new RecursoNaoEncontradoException("Tarefa não encontrada com o ID: " + id);
         }
@@ -52,7 +52,7 @@ public class TarefaService {
         tarefaRepository.deleteById(id);
     }
 
-    public TarefaResponseDTO atualizar(String id, TarefaRequestDTO dto) {
+    public TarefaResponseDTO atualizar(Long id, TarefaRequestDTO dto) {
         TarefaEntity entidadeExistente = tarefaRepository.findById(id)
                 .orElseThrow(() -> new RecursoNaoEncontradoException("Tarefa não encontrada com o ID: " + id));
 

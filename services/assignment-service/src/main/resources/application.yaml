@@ -4,10 +4,19 @@ server:
 spring:
   application:
     name: assignment-service
-  data:
-    mongodb:
-      # Tenta usar a variável do Docker; se não existir (como na IDE), faz fallback para o localhost
-      uri: ${SPRING_DATA_MONGODB_URI:mongodb://${MONGO_INIT_USER}:${MONGO_INIT_PASSWORD}@localhost:27017/assignments?authSource=admin}
 
+  datasource:
+    url: jdbc:mysql://localhost:3309/${MYSQL_ASSIGNMENT_DB}?createDatabaseIfNotExist=true&serverTimezone=UTC
+    username: root
+    password: ${MYSQL_ROOT_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
 jwt:
   secret: ${JWT_SECRET}
