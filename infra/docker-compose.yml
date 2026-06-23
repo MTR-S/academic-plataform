@@ -1,7 +1,6 @@
 version: '3.8'
 
 services:
-  # --- BANCO RELACIONAL 1: AUTH SERVICE ---
   mysql-auth:
     image: mysql:8.0
     container_name: mysql-auth
@@ -20,7 +19,6 @@ services:
       timeout: 5s
       retries: 5
 
-  # --- BANCO RELACIONAL 2: ACADEMIC SERVICE ---
   mysql-academic:
     image: mysql:8.0
     container_name: mysql-academic
@@ -39,7 +37,6 @@ services:
       timeout: 5s
       retries: 5
 
-  # --- BANCO NoSQL: ASSIGNMENT SERVICE ---
   mongo-db:
     image: mongo:latest
     container_name: mongo-db
@@ -58,7 +55,6 @@ services:
       timeout: 5s
       retries: 5
 
-  # --- SERVIÇO DE AUTENTICAÇÃO (Java) ---
   auth-service:
     image: matheus1401docker/auth-service:latest
     ports:
@@ -74,7 +70,6 @@ services:
     networks:
       - devops-network
 
-  # --- SERVIÇO ACADÊMICO (Python) ---
   academic-service:
     build:
       context: ../services/academic-service
@@ -91,7 +86,6 @@ services:
     networks:
       - devops-network
 
-  # --- SERVIÇO DE TAREFAS (Java) ---
   assignment-service:
     build:
       context: ../services/assignment-service
