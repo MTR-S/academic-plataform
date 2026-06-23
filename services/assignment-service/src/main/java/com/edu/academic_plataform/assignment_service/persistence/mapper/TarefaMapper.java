@@ -6,6 +6,7 @@ import com.edu.academic_plataform.assignment_service.database.TarefaEntity;
 import com.edu.academic_plataform.assignment_service.domain.model.Tarefa;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
 public interface TarefaMapper {
@@ -18,4 +19,8 @@ public interface TarefaMapper {
     TarefaResponseDTO toDto(TarefaEntity entity);
 
     Tarefa toDomain(TarefaEntity entity);
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "criadoPor", ignore = true)
+    void atualizarEntidadeDoDto(TarefaRequestDTO dto, @MappingTarget TarefaEntity entity);
 }

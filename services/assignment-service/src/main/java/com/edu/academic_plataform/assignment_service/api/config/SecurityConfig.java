@@ -27,6 +27,8 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/api/assignments").hasRole("PROFESSOR")
+                        .requestMatchers(HttpMethod.DELETE, "/api/assignments/**").hasRole("PROFESSOR")
+                        .requestMatchers(HttpMethod.PUT, "/api/assignments/**").hasRole("PROFESSOR")
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(exceptions -> exceptions

@@ -3,11 +3,11 @@ package com.edu.academic_plataform.assignment_service.service;
 import com.edu.academic_plataform.assignment_service.api.dto.TarefaRequestDTO;
 import com.edu.academic_plataform.assignment_service.api.dto.TarefaResponseDTO;
 import com.edu.academic_plataform.assignment_service.database.TarefaEntity;
+import com.edu.academic_plataform.assignment_service.domain.exception.RecursoNaoEncontradoException;
 import com.edu.academic_plataform.assignment_service.domain.model.Tarefa;
 import com.edu.academic_plataform.assignment_service.persistence.mapper.TarefaMapper;
 import com.edu.academic_plataform.assignment_service.persistence.repository.TarefaRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Principal;
 import java.util.List;
@@ -35,8 +35,31 @@ public class TarefaService {
 
         return tarefaMapper.toDto(tarefaEntitySalva);
     }
-/*
+
     public List<TarefaResponseDTO> listarTodas() {
-        return tarefaRepository.findAll();
-    }*/
+        List<TarefaEntity> entidades = tarefaRepository.findAll();
+
+        return entidades.stream()
+                .map(tarefaMapper::toDto)
+                .toList();
+    }
+
+    public void deletar(String id) {
+        if (!tarefaRepository.existsById(id)) {
+            throw new RecursoNaoEncontradoException("Tarefa não encontrada com o ID: " + id);
+        }
+
+        tarefaRepository.deleteById(id);
+    }
+
+    public TarefaResponseDTO atualizar(String id, TarefaRequestDTO dto) {
+        TarefaEntity entidadeExistente = tarefaRepository.findById(id)
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Tarefa não encontrada com o ID: " + id));
+
+        tarefaMapper.atualizarEntidadeDoDto(dto, entidadeExistente);
+
+        TarefaEntity entidadeSalva = tarefaRepository.save(entidadeExistente);
+
+        return tarefaMapper.toDto(entidadeSalva);
+    }
 }
