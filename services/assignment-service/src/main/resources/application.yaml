@@ -5,13 +5,9 @@ spring:
   application:
     name: assignment-service
   data:
-  mongodb:
-    host: localhost
-    port: 27017
-    database: assignments
-    username: ${MONGO_INIT_USER}
-    password: ${MONGO_INIT_PASSWORD}
-    authentication-database: admin
+    mongodb:
+      # Tenta usar a variável do Docker; se não existir (como na IDE), faz fallback para o localhost
+      uri: ${SPRING_DATA_MONGODB_URI:mongodb://${MONGO_INIT_USER}:${MONGO_INIT_PASSWORD}@localhost:27017/assignments?authSource=admin}
 
 jwt:
   secret: ${JWT_SECRET}
