@@ -40,6 +40,7 @@ public class SecurityFilter extends OncePerRequestFilter {
                 String email = jwt.getSubject();
                 String tipoUsuario = jwt.getClaim("tipo").asString();
 
+
                 SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + tipoUsuario);
 
                 var authentication = new UsernamePasswordAuthenticationToken(email, null, Collections.singletonList(authority));
