@@ -23,12 +23,16 @@ jobs:
         env:
           MYSQL_ROOT_PASSWORD: root
           MYSQL_DATABASE: test_db
-        # O GitHub cria uma rede interna onde o nome da máquina é 'mysql'
+        # Mapeia a porta do container para o host (127.0.0.1:3306).
+        # Sem isso, o runner Ubuntu não consegue alcançar o container MySQL.
+        ports:
+          - 3306:3306
+        # Usa 127.0.0.1 (TCP) para não depender de socket Unix.
         options: >-
-          --health-cmd="mysqladmin ping -h localhost -u root -proot"
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -u root -proot --silent"
           --health-interval=10s
           --health-timeout=5s
-          --health-retries=5
+          --health-retries=10
 
     steps:
       - name: 1. Clonar o repositório
@@ -48,9 +52,9 @@ jobs:
       - name: 4. Esperar o MySQL ficar disponível
         run: |
           for i in {1..30}; do
-            mysqladmin ping -h mysql -u root -proot >/dev/null 2>&1 && break
-            echo "Aguardando o MySQL iniciar..."
-            sleep 1
+            mysqladmin ping -h 127.0.0.1 -u root -proot --silent 2>/dev/null && echo "MySQL pronto!" && break
+            echo "Aguardando o MySQL iniciar... ($i/30)"
+            sleep 2
           done
 
       - name: 5. Rodar os testes automatizados
