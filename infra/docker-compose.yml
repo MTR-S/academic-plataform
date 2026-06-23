@@ -87,10 +87,7 @@ services:
       - devops-network
 
   assignment-service:
-    build:
-      context: ../services/assignment-service
-      dockerfile: Dockerfile
-    container_name: assignment-service
+    image: matheus1401docker/assignment-service:latest
     ports:
       - "8083:8080"
     environment:
