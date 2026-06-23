@@ -50,5 +50,7 @@ jobs:
         working-directory: services/academic-service
         env:
           DATABASE_URL: "mysql+pymysql://root:root@127.0.0.1:3306/test_db"
+          MYSQL_ROOT_PASSWORD: "root"
+          MYSQL_ACADEMIC_DB: "test_db"
         run: |
           pytest
