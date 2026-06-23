@@ -23,13 +23,12 @@ jobs:
         env:
           MYSQL_ROOT_PASSWORD: root
           MYSQL_DATABASE: test_db
-        ports:
-          - 3306:3306
+        # O GitHub cria uma rede interna onde o nome da máquina é 'mysql'
         options: >-
-          --health-cmd="mysqladmin ping -h localhost"
+          --health-cmd="mysqladmin ping -h localhost -u root -proot"
           --health-interval=10s
           --health-timeout=5s
-          --health-retries=3
+          --health-retries=5
 
     steps:
       - name: 1. Clonar o repositório
@@ -46,10 +45,19 @@ jobs:
           python -m pip install --upgrade pip
           pip install fastapi uvicorn sqlalchemy pymysql pydantic pydantic-settings pytest httpx
 
-      - name: 4. Rodar os testes automatizados
+      - name: 4. Esperar o MySQL ficar disponível
+        run: |
+          for i in {1..30}; do
+            mysqladmin ping -h mysql -u root -proot >/dev/null 2>&1 && break
+            echo "Aguardando o MySQL iniciar..."
+            sleep 1
+          done
+
+      - name: 5. Rodar os testes automatizados
         working-directory: services/academic-service
         env:
-          DATABASE_URL: "mysql+pymysql://root:root@127.0.0.1:3306/test_db"
+          # Note que agora apontamos para '@mysql' em vez de '@127.0.0.1'
+          DATABASE_URL: "mysql+pymysql://root:root@mysql:3306/test_db"
           MYSQL_ROOT_PASSWORD: "root"
           MYSQL_ACADEMIC_DB: "test_db"
         run: |
