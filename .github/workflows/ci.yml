@@ -59,7 +59,7 @@ jobs:
           MYSQL_ROOT_PASSWORD: "root"
           MYSQL_ACADEMIC_DB: "test_db"
           DB_USER: "root"
-          DB_HOST: "mysql"
+          DB_HOST: "127.0.0.1"
           DB_PORT: "3306"
         run: |
           pytest
