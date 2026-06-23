@@ -29,6 +29,9 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/assignments").hasRole("PROFESSOR")
                         .requestMatchers(HttpMethod.DELETE, "/api/assignments/**").hasRole("PROFESSOR")
                         .requestMatchers(HttpMethod.PUT, "/api/assignments/**").hasRole("PROFESSOR")
+
+                        .requestMatchers("/actuator/**", "/error").permitAll()
+
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(exceptions -> exceptions
