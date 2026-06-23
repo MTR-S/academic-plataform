@@ -56,9 +56,10 @@ jobs:
       - name: 5. Rodar os testes automatizados
         working-directory: services/academic-service
         env:
-          # Note que agora apontamos para '@mysql' em vez de '@127.0.0.1'
-          DATABASE_URL: "mysql+pymysql://root:root@mysql:3306/test_db"
           MYSQL_ROOT_PASSWORD: "root"
           MYSQL_ACADEMIC_DB: "test_db"
+          DB_USER: "root"
+          DB_HOST: "mysql"
+          DB_PORT: "3306"
         run: |
           pytest
