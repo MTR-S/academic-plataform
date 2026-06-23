@@ -6,12 +6,12 @@ on:
     branches: [ "main" ]
     paths:
       - 'services/academic-service/**'
-      - '.github/workflows/ci.yml'
+      - '.github/workflows/ci-academic-service.yml'
   pull_request:
     branches: [ "main" ]
     paths:
       - 'services/academic-service/**'
-      - '.github/workflows/ci.yml'
+      - '.github/workflows/ci-academic-service.yml'
 
 jobs:
   test:
