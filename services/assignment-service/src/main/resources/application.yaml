@@ -1,12 +1,17 @@
 server:
-  port: 8080 # Porta interna do container (mapeada para 8083 no compose)
+  port: 8083
 
 spring:
   application:
     name: assignment-service
   data:
-    mongodb:
-      uri: mongodb://root:${MONGO_INIT_PASSWORD}@localhost:27017/assignments?authSource=admin
+  mongodb:
+    host: localhost
+    port: 27017
+    database: assignments
+    username: ${MONGO_INIT_USER}
+    password: ${MONGO_INIT_PASSWORD}
+    authentication-database: admin
 
 jwt:
   secret: ${JWT_SECRET}
