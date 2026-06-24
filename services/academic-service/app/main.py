@@ -1,15 +1,24 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 import logging
-
+import sys
 
 from app.db.database import engine, Base
 from app.models import academic
+from app.api.endpoints import health
 
 # IMPORTANTE: Importamos as rotas do Aluno que acabamos de criar
 from app.api.endpoints import aluno, disciplina, professor, turma, matricula
-logging.basicConfig(level=logging.INFO)
+
+# --- CONFIGURAÇÃO PADRÃO DE LOGS (Estilo Spring Boot) ---
+logging.basicConfig(
+    stream=sys.stdout,
+    level=logging.INFO,
+    format="%(asctime)s - [%(levelname)s] - %(name)s : %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S"
+)
 logger = logging.getLogger(__name__)
+# --------------------------------------------------------
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -26,10 +35,6 @@ app = FastAPI(
     lifespan=lifespan
 )
 
-@app.get("/health", tags=["Sistema"])
-def health_check():
-    return {"status": "online", "service": "academic-service"}
-
 # IMPORTANTE: Plugamos as rotas no aplicativo principal
 # Tudo que for da rota de alunos ficará no endereço /api/alunos
 app.include_router(aluno.router, prefix="/api/alunos", tags=["Alunos"])
@@ -37,3 +42,6 @@ app.include_router(disciplina.router, prefix="/api/disciplinas", tags=["Discipli
 app.include_router(professor.router, prefix="/api/professores", tags=["Professores"])
 app.include_router(turma.router, prefix="/api/turmas", tags=["Turmas"])
 app.include_router(matricula.router, prefix="/api/matriculas", tags=["Matrículas"])
+
+# Adicionamos a nova rota de health robusta (sem prefixo, para ficar na raiz /health)
+app.include_router(health.router)
