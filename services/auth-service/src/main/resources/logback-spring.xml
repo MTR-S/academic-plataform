@@ -11,7 +11,7 @@
         </http>
         <format>
             <label>
-                <pattern>application=${appName},level=%level</pattern>
+                <pattern>application=auth-service,level=%level</pattern>
             </label>
             <message>
                 <pattern>${CONSOLE_LOG_PATTERN}</pattern>
