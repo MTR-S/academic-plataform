@@ -42,7 +42,7 @@ public class AssigmentController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<MensagemResponseDTO> eliminarTarefa(@PathVariable String id) {
+    public ResponseEntity<MensagemResponseDTO> eliminarTarefa(@PathVariable Long id) {
         tarefaService.deletar(id);
 
         MensagemResponseDTO response = new MensagemResponseDTO(
@@ -55,7 +55,7 @@ public class AssigmentController {
 
     @PutMapping("/{id}")
     public ResponseEntity<TarefaResponseDTO> atualizarTarefa(
-            @PathVariable String id,
+            @PathVariable Long id,
             @RequestBody @Valid TarefaRequestDTO tarefaDto) {
 
         TarefaResponseDTO tarefaAtualizada = tarefaService.atualizar(id, tarefaDto);

@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 @Data
 public class Tarefa {
 
+    private Long id;
     private String titulo;
     private String descricao;
     private LocalDateTime dataEntrega;

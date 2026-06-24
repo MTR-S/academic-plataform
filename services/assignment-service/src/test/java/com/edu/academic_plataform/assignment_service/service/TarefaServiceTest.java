@@ -46,7 +46,9 @@ public class TarefaServiceTest {
         Tarefa domain = new Tarefa();
         TarefaEntity entity = new TarefaEntity();
         TarefaEntity entitySalva = new TarefaEntity();
-        TarefaResponseDTO responseDTO = new TarefaResponseDTO("1", "Título", "Desc", LocalDateTime.now().plusDays(1), "prof@teste.com");
+
+        // CORREÇÃO: Usando 1L ao invés de "1"
+        TarefaResponseDTO responseDTO = new TarefaResponseDTO(1L, "Título", "Desc", LocalDateTime.now().plusDays(1), "prof@teste.com");
 
         when(tarefaMapper.toDomain(requestDTO)).thenReturn(domain);
         when(principal.getName()).thenReturn("prof@teste.com");
@@ -73,8 +75,10 @@ public class TarefaServiceTest {
         // Arrange
         TarefaEntity entity1 = new TarefaEntity();
         TarefaEntity entity2 = new TarefaEntity();
-        TarefaResponseDTO dto1 = new TarefaResponseDTO("1", "T1", "D1", null, "p1");
-        TarefaResponseDTO dto2 = new TarefaResponseDTO("2", "T2", "D2", null, "p2");
+
+        // CORREÇÃO: Usando 1L e 2L
+        TarefaResponseDTO dto1 = new TarefaResponseDTO(1L, "T1", "D1", null, "p1");
+        TarefaResponseDTO dto2 = new TarefaResponseDTO(2L, "T2", "D2", null, "p2");
 
         when(tarefaRepository.findAll()).thenReturn(List.of(entity1, entity2));
         when(tarefaMapper.toDto(entity1)).thenReturn(dto1);
@@ -91,8 +95,8 @@ public class TarefaServiceTest {
     @Test
     @DisplayName("Deve deletar a tarefa quando o ID existir no banco")
     void deveDeletarQuandoIdExistir() {
-        // Arrange
-        String id = "id-valido";
+        // Arrange - CORREÇÃO: Alterado para Long
+        Long id = 1L;
         when(tarefaRepository.existsById(id)).thenReturn(true);
 
         // Act
@@ -105,8 +109,8 @@ public class TarefaServiceTest {
     @Test
     @DisplayName("Deve lançar RecursoNaoEncontradoException ao tentar deletar ID inexistente")
     void deveLancarExcecaoAoDeletarIdInexistente() {
-        // Arrange
-        String id = "id-invalido";
+        // Arrange - CORREÇÃO: Alterado para Long
+        Long id = 99L;
         when(tarefaRepository.existsById(id)).thenReturn(false);
 
         // Act & Assert
@@ -114,15 +118,15 @@ public class TarefaServiceTest {
             tarefaService.deletar(id);
         });
 
-        assertEquals("Tarefa não encontrada com o ID: id-invalido", exception.getMessage());
+        assertEquals("Tarefa não encontrada com o ID: 99", exception.getMessage());
         verify(tarefaRepository, never()).deleteById(any());
     }
 
     @Test
     @DisplayName("Deve atualizar a tarefa com sucesso quando o ID existir")
     void deveAtualizarTarefaComSucesso() {
-        // Arrange
-        String id = "id-valido";
+        // Arrange - CORREÇÃO: Alterado para Long
+        Long id = 1L;
         TarefaRequestDTO requestDTO = new TarefaRequestDTO("Novo Título", "Nova Desc", LocalDateTime.now().plusDays(2));
         TarefaEntity entidadeExistente = new TarefaEntity();
         TarefaEntity entidadeSalva = new TarefaEntity();
@@ -147,8 +151,8 @@ public class TarefaServiceTest {
     @Test
     @DisplayName("Deve lançar RecursoNaoEncontradoException ao tentar atualizar ID inexistente")
     void deveLancarExcecaoAoAtualizarIdInexistente() {
-        // Arrange
-        String id = "id-invalido";
+        // Arrange - CORREÇÃO: Alterado para Long
+        Long id = 99L;
         TarefaRequestDTO requestDTO = new TarefaRequestDTO("Título", "Desc", null);
 
         when(tarefaRepository.findById(id)).thenReturn(Optional.empty());
@@ -158,7 +162,7 @@ public class TarefaServiceTest {
             tarefaService.atualizar(id, requestDTO);
         });
 
-        assertEquals("Tarefa não encontrada com o ID: id-invalido", exception.getMessage());
+        assertEquals("Tarefa não encontrada com o ID: 99", exception.getMessage());
         verify(tarefaMapper, never()).atualizarEntidadeDoDto(any(), any());
         verify(tarefaRepository, never()).save(any());
     }

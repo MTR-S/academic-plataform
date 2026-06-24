@@ -1,26 +1,32 @@
 package com.edu.academic_plataform.assignment_service.database;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 
 import java.time.LocalDateTime;
 
-@Document(collection = "tarefas")
+@Entity
+@Table(name = "tarefas")
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class TarefaEntity {
 
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
+    @Column(nullable = false)
     private String titulo;
+
+    @Column(nullable = false)
     private String descricao;
+
+    @Column(nullable = false)
     private LocalDateTime dataEntrega;
 
     private String criadoPor;
