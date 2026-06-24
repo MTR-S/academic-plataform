@@ -24,6 +24,13 @@ public class SecurityFilter extends OncePerRequestFilter {
     private String secret;
 
     @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        String path = request.getRequestURI();
+
+        return path.contains("/actuator/");
+    }
+
+    @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
@@ -39,7 +46,6 @@ public class SecurityFilter extends OncePerRequestFilter {
 
                 String email = jwt.getSubject();
                 String tipoUsuario = jwt.getClaim("tipo").asString();
-
 
                 SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + tipoUsuario);
 
