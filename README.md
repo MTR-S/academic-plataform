@@ -24,7 +24,7 @@ A arquitetura da plataforma foi desenhada separando o modelo conceitual em três
 
 ### 3. Serviço de Tarefas (`assignment-service`)
 * **Stack:** Java 21, Spring Boot 3
-* **Persistência:** MongoDB
+* **Persistência:** MySQL
 * **Responsabilidade:** Gerenciamento de atividades acadêmicas e recepção de entregas (submissões). O uso de NoSQL viabiliza a flexibilidade de schema para descrições dinâmicas e suporta alta carga de escritas.
 
 ---
