@@ -43,4 +43,4 @@ O tráfego de dados e o isolamento da stack são resolvidos através de dois flu
 Para testes iniciais e para subir a camada de persistência poligota, utilize o Docker Compose:
 
 ```bash
-docker compose up -d mysql-auth mysql-academic mongo-db
+docker compose up -d auth-service assignment-service academic-servie
