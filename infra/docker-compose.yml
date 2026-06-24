@@ -106,7 +106,22 @@ services:
     networks:
       - devops-network
 
-  # --- Monitoring Stack (PLG) ---
+  # --- Monitoring Stack (PLG + Prometheus) ---
+
+  prometheus:
+    image: prom/prometheus:v2.52.0
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    networks:
+      - devops-network
+    restart: unless-stopped
 
   loki:
     image: grafana/loki:2.9.8
@@ -148,6 +163,7 @@ services:
       - grafana_data:/var/lib/grafana
     depends_on:
       - loki
+      - prometheus
     networks:
       - devops-network
     restart: unless-stopped
@@ -158,6 +174,7 @@ volumes:
   mongo_data:
   loki_data:
   grafana_data:
+  prometheus_data:
 
 networks:
   devops-network:

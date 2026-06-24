@@ -3,6 +3,8 @@ from fastapi import FastAPI
 import logging
 import sys
 
+from prometheus_fastapi_instrumentator import Instrumentator
+
 from app.db.database import engine, Base
 from app.models import academic
 from app.api.endpoints import health
@@ -45,3 +47,5 @@ app.include_router(matricula.router, prefix="/api/matriculas", tags=["Matrícula
 
 # Adicionamos a nova rota de health robusta (sem prefixo, para ficar na raiz /health)
 app.include_router(health.router)
+
+Instrumentator().instrument(app).expose(app)
